@@ -74,9 +74,27 @@ int Delete(int value, struct Node **head_p)
 // Function to generate and insert random integers into the linked list
 void Populate(struct Node **head, int count)
 {
-    for (int i = 0; i < count; i++)
+    int inserted_count = 0;
+
+    while (inserted_count < count)
     {
         int randomValue = rand() % INT_MAX;
-        Insert(randomValue, head);
+        if (Insert(randomValue, head))
+        {
+            inserted_count++;
+        }
+    }
+}
+
+/* Destroy linked list */
+void Destroy(struct Node* head_p){
+    Node* curr_p = head_p;
+    Node* next_p = NULL;
+
+    while (curr_p != NULL)
+    {
+        next_p = curr_p;
+        curr_p = curr_p->next;
+        free(next_p);
     }
 }
