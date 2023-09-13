@@ -18,5 +18,6 @@ int Member(int value, Node *head_p);
 int Insert(int value, Node **head_p);
 int Delete(int value, Node **head_p);
 void Populate(struct Node **head, int count);
+void Destroy(struct Node* head_p);
 
 #endif

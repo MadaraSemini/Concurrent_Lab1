@@ -8,6 +8,6 @@
 #include <sys/time.h>
 #include "linked_list_util.h"
 
-unsigned long serialExecution(int total_operations, int member_frac, int insert_frac, int delete_frac);
+double serialExecution(int total_operations, int member_frac, int insert_frac, int delete_frac);
 
 #endif
