@@ -7,9 +7,9 @@
 double serialExecution(int total_operations, int member_frac, int insert_frac, int delete_frac)
 {
     Node *head = NULL;
-    int member_ops_count = 0;
-    int insert_ops_count = 0;
-    int delete_ops_count = 0;
+    int tot_member_ops = 0;
+    int tot_insert_ops = 0;
+    int tot_delete_ops = 0;
     int completed_count = 0;
 
     Populate(&head,1000);
@@ -17,11 +17,7 @@ double serialExecution(int total_operations, int member_frac, int insert_frac, i
     clock_t start, end;
     double time_taken;
 
-    // struct timeval start;
-    // struct timeval end;
-
-    // Start time
-    // gettimeofday(&start, NULL);
+    //Start timer
     start = clock();
 
     while (completed_count < total_operations){
@@ -29,26 +25,24 @@ double serialExecution(int total_operations, int member_frac, int insert_frac, i
         int rand_value = rand() % INT_MAX;
         int operation_no = rand() % 3;
 
-        if (operation_no == 0 && insert_ops_count < insert_frac){
+        if (operation_no == 0 && tot_insert_ops < insert_frac){
             Insert(rand_value, &head);
-            insert_ops_count++;
+            tot_insert_ops++;
             completed_count++;
         }
-        else if(operation_no == 1 && member_ops_count < member_frac){
+        else if(operation_no == 1 && tot_member_ops < member_frac){
             Member(rand_value, head);
-            member_ops_count++;
+            tot_member_ops++;
             completed_count++;
         }
-        else if(delete_ops_count < delete_frac){
+        else if(tot_delete_ops < delete_frac){
             Delete(rand_value, &head);
-            delete_ops_count++;
+            tot_delete_ops++;
             completed_count++;
         }
     }
 
     // End time
-    // gettimeofday(&end, NULL);
-    // unsigned long time_taken = time_diff(&start, &end);
     end = clock();
     time_taken = (double)(end - start) / CLOCKS_PER_SEC;
     printf("The time taken to execute the program is %f seconds\n", time_taken);
