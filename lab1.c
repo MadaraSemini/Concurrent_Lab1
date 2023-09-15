@@ -3,12 +3,13 @@
 #include <pthread.h>
 #include <math.h>
 #include "serial_exec.h"
+#include "mutex.h"
 
 int main(int argc, char* argv[]) {
     double serial_runtime, mut_t1_runtime, mut_t2_runtime, mut_t4_runtime, mut_t8_runtime, rw_t1_runtime,  rw_t2_runtime, rw_t4_runtime, rw_t8_runtime;
 
     // Number of samples
-    const int N = 20;
+    const int N = 385;
 
     // Number of operations
     int m = 10000;
@@ -58,16 +59,16 @@ int main(int argc, char* argv[]) {
         for (int j = 0; j < N; j++)
         {
             serial_runtime = serialExecution(m, member_frac, insert_frac, delete_frac);
-            // mut_t1_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 1);
-            // mut_t2_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 2);
-            // mut_t4_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 4);
-            // mut_t8_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 8);
+            mut_t1_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 1);
+            mut_t2_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 2);
+            mut_t4_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 4);
+            mut_t8_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 8);
             // rw_t1_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 1);
             // rw_t2_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 2);
             // rw_t4_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 4);
             // rw_t8_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 8);
 
-            printf("Case %d : %f \n", i,serial_runtime);
+            printf("Case %d : %f \n %f \n %f\n %f\n %f\n", i,serial_runtime,mut_t1_runtime,mut_t2_runtime,mut_t4_runtime,mut_t8_runtime);
             // fprintf(file,"%lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu\n",serial_runtime, mut_t1_runtime, mut_t2_runtime, mut_t4_runtime, mut_t8_runtime, rw_t1_runtime,  rw_t2_runtime, rw_t4_runtime, rw_t8_runtime);
         }
         printf("----------------------------- Case %d completed -----------------------------\n", i);
