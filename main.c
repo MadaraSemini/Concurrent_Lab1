@@ -18,12 +18,8 @@ int main()
     int insertOpCount;
     int deleteOpCount;
 
+    srand(time(0));
     FILE *file;
-
-    // char filePath[50] = "./output/Case";
-    // printf(filePath);
-    // char filePathAddition[] = "1.csv";
-    // file = fopen(strcat(filePath, filePathAddition), "w+");
 
     for (int i = 0; i < 3; i++)
     {
