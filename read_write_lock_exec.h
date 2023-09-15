@@ -5,10 +5,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
-#include <sys/time.h>
 #include "linked_list_util.h"
 
-void *threadFuncReadWrite(void *rank);
+void *ReadWriteThread(void *rank);
 
 struct read_write_lock_data
 {
