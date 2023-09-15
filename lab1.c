@@ -1,127 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-
-struct Node* head_p = NULL;
-pthread_mutex_t mutex;
-
-// Define a structure for a node
-struct Node {
-    int data;
-    struct Node* next;
-};
-
-// Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
-
-//Check a value is a member of the linked list
-int member(int value, struct Node* head_p) {
-    struct Node* current_p = head_p;
-
-    while (current_p != NULL && current_p->data < value)
-    {
-        current_p = current_p->next;
-    }
-
-    if(current_p == NULL || current_p->data >value) {
-        return 0;
-    } else {
-        return 1;
-    }
-    
-}
-
-//Insert value to the link list
-int insert(int value, struct Node** head_p) {
-    struct Node* current_p = *head_p;
-    struct Node* pred_p = NULL;
-    struct Node* temp_p;
-
-    while (current_p !=NULL && current_p->data <value) {
-        pred_p = current_p;
-        current_p = current_p->next;
-    }
-
-    if(current_p == NULL || current_p->data>value) {
-        temp_p =malloc(sizeof(struct Node));
-        temp_p->data =value;
-        temp_p->next = current_p;
-        if(pred_p == NULL)
-            *head_p =temp_p;
-        else
-            pred_p->next = temp_p;
-        return 1;
-    } else {
-        return 0;
-    }   
-}
-
-//Delete node
-int delete(int value, struct Node** head_p) {
-   struct Node* current_p = *head_p;
-   struct Node* pred_p = NULL;
-
-   while (current_p != NULL && current_p->data < value)
-   {
-    pred_p = current_p;
-    current_p =current_p->next;
-   }
-   if(current_p != NULL && current_p->data ==value) {
-    if(pred_p ==NULL){
-        *head_p =current_p->next;
-        free(current_p);
-    } else {
-        pred_p->next =current_p->next;
-        free(current_p);
-    }
-    return 1;
-   } else {
-    return 0;
-   }
-}
-
-// Function to display the linked list
-void displayList(struct Node* head_p) {
-    struct Node* current_p = head_p;
-    while (current_p != NULL) {
-        printf("%d -> ", current_p->data);
-        current_p = current_p->next;
-    }
-    printf("NULL\n");
-}
+#include <math.h>
+#include "serial_exec.h"
+#include "mutex.h"
 
 int main(int argc, char* argv[]) {
-    clock_t start, end;
-    double time_taken;
+    double serial_runtime, mut_t1_runtime, mut_t2_runtime, mut_t4_runtime, mut_t8_runtime, rw_t1_runtime,  rw_t2_runtime, rw_t4_runtime, rw_t8_runtime;
 
-    start = clock();
+    // Number of samples
+    const int N = 385;
 
-    long thread_count;
-    pthread_t* thread_handle;
+    // Number of operations
+    int m = 10000;
 
-    thread_count= strtol(argv[1],NULL,10);
-    thread_handle = malloc(thread_count*sizeof(pthread_t));
+    // Fractions for each case
+    int member_frac;
+    int insert_frac;
+    int delete_frac;
 
-    head_p =createNode(6);
-    insert(2,&head_p);
-    printf("Linked List: ");
-    displayList(head_p);
+    // Use current time as seed for random generator
+    srand(time(0));
 
+    // FILE *file;
 
+    // Iterate for the 3 cases
+    for (int i = 0; i < 3; i++) {
+        switch (i) {
+            case 0:
+            printf("case 0");
+                // file = fopen("C:\\Concurrent Programming\\Assignments\\Lab1\\output\\Case_1.csv","w+");
+                // fprintf(file,"Serial, Mutex_t1, Mutex_t2, Mutex_t4, Mutex_t8, ReadWrite_t1, ReadWrite_t2, ReadWrite_t4, ReadWrite_t8\n");
+                member_frac = lround(m * 0.99);
+                insert_frac = lround(m * 0.005);
+                delete_frac = lround(m * 0.005);
+                break;
 
-    end = clock();
+            case 1:
+                // file = fopen("C:\\Concurrent Programming\\Assignments\\Lab1\\output\\Case_2.csv","w+");
+                // fprintf(file,"Serial, Mutex_t1, Mutex_t2, Mutex_t4, Mutex_t8, ReadWrite_t1, ReadWrite_t2, ReadWrite_t4, ReadWrite_t8\n");
+                member_frac = lround(m * 0.9);
+                insert_frac = lround(m * 0.05);
+                delete_frac = lround(m * 0.05);
+                break;
 
-    time_taken = (double)(end - start) / CLOCKS_PER_SEC;
+            case 2:
+                // file = fopen("C:\\Concurrent Programming\\Assignments\\Lab1\\output\\Case_3.csv","w+");
+                // fprintf(file,"Serial, Mutex_t1, Mutex_t2, Mutex_t4, Mutex_t8, ReadWrite_t1, ReadWrite_t2, ReadWrite_t4, ReadWrite_t8\n");
+                member_frac = lround(m * 0.5);
+                insert_frac = lround(m * 0.25);
+                delete_frac = lround(m * 0.25);
+                break;
 
-    printf("The time taken to execute the program is %f seconds\n", time_taken);
+            default:
+                break;
+        }
+
+        for (int j = 0; j < N; j++)
+        {
+            serial_runtime = serialExecution(m, member_frac, insert_frac, delete_frac);
+            mut_t1_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 1);
+            mut_t2_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 2);
+            mut_t4_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 4);
+            mut_t8_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 8);
+            // rw_t1_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 1);
+            // rw_t2_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 2);
+            // rw_t4_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 4);
+            // rw_t8_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 8);
+
+            printf("Case %d : %f \n %f \n %f\n %f\n %f\n", i,serial_runtime,mut_t1_runtime,mut_t2_runtime,mut_t4_runtime,mut_t8_runtime);
+            // fprintf(file,"%lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu\n",serial_runtime, mut_t1_runtime, mut_t2_runtime, mut_t4_runtime, mut_t8_runtime, rw_t1_runtime,  rw_t2_runtime, rw_t4_runtime, rw_t8_runtime);
+        }
+        printf("----------------------------- Case %d completed -----------------------------\n", i);
+        // fclose(file);
+    }
     return 0;
 }
