@@ -50,7 +50,7 @@ double readWriteLockExec(int thread_count, int total_operations, int member_frac
 
     pthread_rwlock_destroy(&data.rwlock);
     pthread_mutex_destroy(&data.mutex);
-    Destroy(&data.head);
+    // Destroy(&data.head);
     printf("Read Write Lock Execution completed\n");
     return time_taken;
 }
