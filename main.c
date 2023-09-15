@@ -11,7 +11,7 @@ int main()
     double serial, readWriteArr[4], mutex[4];
     double cases[3][3] = {{0.99, 0.005, 0.005}, {0.9, 0.05, 0.05}, {0.5, 0.25, 0.25}};
     char fileNames[3][18] = {"./output/Case1.csv", "./output/Case2.csv", "./output/Case3.csv"};
-    int sample_count = 100;
+    int sample_count = 342;
     int m = 10000;
 
     int memberOpCount;

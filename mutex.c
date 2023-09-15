@@ -10,7 +10,8 @@ double mutexExecution(int thread_count, int total_operations, int member_frac, i
 
     mutex_data data;
     data.head = NULL;
-    data.m = total_operations;
+    // data.m = total_operations;
+    data.m = insert_frac + member_frac + delete_frac;
 
     data.tot_insert_ops = 0;
     data.tot_member_ops = 0;
