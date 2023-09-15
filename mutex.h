@@ -27,6 +27,6 @@ struct mutex_data {
 };
 typedef struct mutex_data mutex_data;
 
-double mutexExecution(int total_operations, int member_frac, int insert_frac, int delete_frac, int thread_count);
+double mutexExecution(int thread_count, int total_operations, int member_frac, int insert_frac, int delete_frac);
 
 #endif //LAB1_MUTEX_H

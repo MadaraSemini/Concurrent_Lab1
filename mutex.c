@@ -5,7 +5,7 @@
 #include "linked_list_util.h"
 #include "mutex.h"
 
-double mutexExecution(int total_operations, int member_frac, int insert_frac, int delete_frac, int thread_count){
+double mutexExecution(int thread_count, int total_operations, int member_frac, int insert_frac, int delete_frac){
 
     mutex_data data;
     data.head = NULL;
@@ -62,12 +62,13 @@ void *threadFuncMutex(void * args){
     while (data->completed_count < data->m){
 
         // Generate random number
-        int rand_value = rand() % INT_MAX;
+        int rand_value = rand() % 65536;
 
         // Generate random operation number
         int op = rand() % 3;
 
-        if (op==0 && data->tot_insert_ops < data->insert_frac){
+        if (op==0 && data->tot_insert_ops < data->insert_frac)
+        {
             if (data->completed_count < data->m){
                 /* Critical section */
                 pthread_mutex_lock(&data->mutex);

@@ -59,10 +59,10 @@ int main(int argc, char* argv[]) {
         for (int j = 0; j < N; j++)
         {
             serial_runtime = serialExecution(m, member_frac, insert_frac, delete_frac);
-            mut_t1_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 1);
-            mut_t2_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 2);
-            mut_t4_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 4);
-            mut_t8_runtime = mutexExecution(m, member_frac, insert_frac, delete_frac, 8);
+            mut_t1_runtime = mutexExecution(1,m, member_frac, insert_frac, delete_frac);
+            mut_t2_runtime = mutexExecution(2,m, member_frac, insert_frac, delete_frac);
+            mut_t4_runtime = mutexExecution(4,m, member_frac, insert_frac, delete_frac);
+            mut_t8_runtime = mutexExecution(8,m, member_frac, insert_frac, delete_frac);
             // rw_t1_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 1);
             // rw_t2_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 2);
             // rw_t4_runtime = readWriteExecution(m, member_frac, insert_frac, delete_frac, 4);

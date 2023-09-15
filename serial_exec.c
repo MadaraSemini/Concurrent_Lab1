@@ -22,7 +22,7 @@ double serialExecution(int total_operations, int member_frac, int insert_frac, i
 
     while (completed_count < total_operations){
 
-        int rand_value = rand() % INT_MAX;
+        int rand_value = rand() % 65536;
         int operation_no = rand() % 3;
 
         if (operation_no == 0 && tot_insert_ops < insert_frac){
