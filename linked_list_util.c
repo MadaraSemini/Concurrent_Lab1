@@ -76,7 +76,7 @@ void Populate(struct Node **head, int count)
 {
     for (int i = 0; i < count; i++)
     {
-        int randomValue = rand() % INT_MAX;
+        int randomValue = rand() % 65536;
         Insert(randomValue, head);
     }
 }
