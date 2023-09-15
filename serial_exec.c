@@ -12,30 +12,34 @@ double serialExecution(int total_operations, int member_frac, int insert_frac, i
     int tot_delete_ops = 0;
     int completed_count = 0;
 
-    Populate(&head,1000);
+    Populate(&head, 1000);
 
     clock_t start, end;
     double time_taken;
 
-    //Start timer
+    // Start timer
     start = clock();
 
-    while (completed_count < total_operations){
+    while (completed_count < total_operations)
+    {
 
-        int rand_value = rand() % INT_MAX;
+        int rand_value = rand() % 65536;
         int operation_no = rand() % 3;
 
-        if (operation_no == 0 && tot_insert_ops < insert_frac){
+        if (operation_no == 0 && tot_insert_ops < insert_frac)
+        {
             Insert(rand_value, &head);
             tot_insert_ops++;
             completed_count++;
         }
-        else if(operation_no == 1 && tot_member_ops < member_frac){
+        else if (operation_no == 1 && tot_member_ops < member_frac)
+        {
             Member(rand_value, head);
             tot_member_ops++;
             completed_count++;
         }
-        else if(tot_delete_ops < delete_frac){
+        else if (tot_delete_ops < delete_frac)
+        {
             Delete(rand_value, &head);
             tot_delete_ops++;
             completed_count++;
@@ -50,5 +54,4 @@ double serialExecution(int total_operations, int member_frac, int insert_frac, i
     Destroy(head);
     printf("Serial run complete\n");
     return time_taken;
-
 }

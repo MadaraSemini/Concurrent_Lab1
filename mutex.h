@@ -8,9 +8,10 @@
 #include <sys/time.h>
 #include "linked_list_util.h"
 
-void *threadFuncMutex(void* rank);
+void *threadFuncMutex(void *rank);
 
-struct mutex_data {
+struct mutex_data
+{
     pthread_mutex_t mutex;
     Node *head;
 
@@ -27,6 +28,6 @@ struct mutex_data {
 };
 typedef struct mutex_data mutex_data;
 
-double mutexExecution(int total_operations, int member_frac, int insert_frac, int delete_frac, int thread_count);
+double mutexExecution(int thread_count, int total_operations, int member_frac, int insert_frac, int delete_frac);
 
-#endif //LAB1_MUTEX_H
+#endif // LAB1_MUTEX_H
