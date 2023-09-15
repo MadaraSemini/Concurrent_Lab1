@@ -59,6 +59,8 @@ void *ReadWriteThread(void *args)
 {
 
     read_write_lock_data *data = args;
+    pthread_t tid = pthread_self(); // Get the thread ID
+    printf("Thread ID: %lu\n", tid);
 
     while (data->total_ops < data->m)
     {
